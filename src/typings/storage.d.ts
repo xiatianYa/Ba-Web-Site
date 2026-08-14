@@ -11,6 +11,11 @@ declare namespace StorageType {
     serverView: 'card' | 'table';
     /** 侧边栏折叠状态 */
     siderCollapsed: boolean;
+    /** 挤服配置（触发人数 + 挤服延迟） */
+    gameJoinConfig: {
+      joinPerson: number;
+      joinDelay: number;
+    };
     /** 登录令牌 */
     token: string;
     /** 刷新令牌 */

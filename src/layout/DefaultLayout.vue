@@ -56,16 +56,29 @@ watch(
         </RouterView>
       </main>
 
-      <!-- 页脚 -->
+      <!-- 页脚（备案信息） -->
       <footer class="border-t border-base-300 bg-base-200/50">
         <div
-          class="mx-auto flex max-w-6xl flex-col items-center gap-2 px-4 py-6 text-sm text-base-content/60 sm:flex-row sm:justify-between"
+          class="mx-auto flex max-w-6xl flex-col items-center gap-2 px-4 py-6 text-sm text-base-content/60 sm:flex-row sm:justify-center"
         >
-          <span class="flex items-center gap-2">
-            <span class="font-semibold text-base-content/80">{{ $t('system.title') }}</span>
-            <span>{{ $t('footer.brand') }}</span>
+          <span class="flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
+            <a
+              href="https://github.com/xiatianYa"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="transition-colors hover:text-primary"
+            >
+              Copyright MIT © 2024 夏天
+            </a>
+            <a
+              href="https://beian.miit.gov.cn/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="transition-colors hover:text-primary"
+            >
+              湘ICP备2024066741号-1
+            </a>
           </span>
-          <span>{{ $t('footer.techStack') }}</span>
         </div>
       </footer>
     </div>

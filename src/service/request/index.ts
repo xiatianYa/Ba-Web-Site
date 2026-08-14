@@ -4,6 +4,8 @@ import axios, {
   AxiosError,
   AxiosResponse
 } from 'axios';
+import { localStg } from '@/utils/storage';
+import { AUTH_STORAGE_KEYS } from '@/constants/cache';
 
 /** 后端统一响应结构 */
 export interface Response<T = unknown> {
@@ -44,10 +46,10 @@ const instance: AxiosInstance = axios.create({
   withCredentials: true
 });
 
-// 请求拦截器：注入鉴权 Token
+// 请求拦截器：注入鉴权 Token（与 auth store 共用 localStg 持久化键）
 instance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
+    const token = localStg.get(AUTH_STORAGE_KEYS.TOKEN);
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

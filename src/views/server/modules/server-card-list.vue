@@ -5,12 +5,10 @@ import { Icon } from '@iconify/vue';
 import {
   getMapPhaseText,
   calculatePastMinutes,
-  getPingLevel,
   getPlayerLevel,
   getScoreLevel,
   getTypeColorHex,
   PLAYER_LEVEL_COLORS,
-  PING_COLORS,
   SCORE_COLORS
 } from '@/hooks/business/server';
 import { useDict } from '@/hooks/business/use-dict';
@@ -160,9 +158,6 @@ const getDotFilled = (server: Api.Game.SeverVo) =>
               {{ getTypeLabel(server.type) }}
             </span>
             <span v-for="(tag, idx) in server.tag" :key="idx" class="tag tag-item">{{ getTagLabel(tag) }}</span>
-            <span class="tag tag-ping" :style="{ '--ping-color': PING_COLORS[getPingLevel(server.ping)] }">
-              {{ server.ping ? `${server.ping}ms` : '???' }}
-            </span>
             <span v-if="server.dateTimeOriginal" class="online-time">
               <Icon icon="heroicons:clock" class="online-time-icon" />
               {{ $t('server.minutesAgo', { count: calculatePastMinutes(server.dateTimeOriginal) }) }}
@@ -404,12 +399,6 @@ const getDotFilled = (server: Api.Game.SeverVo) =>
         background: color-mix(in oklab, #22c55e 18%, transparent);
         color: #bbf7d0;
         border: 1px solid rgba(34, 197, 94, 0.3);
-      }
-
-      &.tag-ping {
-        background: rgba(0, 0, 0, 0.45);
-        color: var(--ping-color);
-        border: 1px solid color-mix(in oklab, var(--ping-color) 35%, transparent);
       }
     }
 

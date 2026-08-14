@@ -38,7 +38,7 @@ const handleSelect = (id: number | null) => {
   <aside class="sticky top-[68px] hidden w-60 shrink-0 self-start flex-col gap-2 lg:flex">
     <div class="flex items-center gap-2 px-1">
       <Icon icon="heroicons:server-stack" class="h-4 w-4 text-indigo-500" />
-      <span class="text-sm font-bold text-base-content/70">{{ $t('server.communityList') }}</span>
+      <span class="text-base font-bold text-base-content/70">{{ $t('server.communityList') }}</span>
     </div>
 
     <!-- 各社区 -->
@@ -75,7 +75,7 @@ const handleSelect = (id: number | null) => {
   <div class="order-first lg:hidden">
     <div class="mb-3 flex items-center gap-2">
       <Icon icon="heroicons:server-stack" class="h-4 w-4 text-indigo-500" />
-      <span class="text-sm font-bold text-base-content/70">{{ $t('server.communityList') }}</span>
+      <span class="text-base font-bold text-base-content/70">{{ $t('server.communityList') }}</span>
     </div>
     <div class="flex gap-2 overflow-x-auto pb-2" style="scrollbar-width: thin">
       <button

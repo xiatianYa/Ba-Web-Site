@@ -22,6 +22,7 @@ const props = defineProps<{ servers: Api.Game.SeverVo[] }>();
 
 const emit = defineEmits<{
   (e: 'join', server: Api.Game.SeverVo): void;
+  (e: 'copy', server: Api.Game.SeverVo): void;
   (e: 'autoJoin', server: Api.Game.SeverVo): void;
 }>();
 
@@ -284,6 +285,9 @@ const getTagLabel = (tag: string): string => {
           <!-- 操作 -->
           <div class="td td-action">
             <div class="action-cell">
+              <button class="action-btn copy-btn" :title="$t('server.copyAddr')" @click="emit('copy', server)">
+                <Icon icon="heroicons:clipboard-document" class="action-icon" />
+              </button>
               <button class="action-btn join-btn" :title="$t('server.joinServer')" @click="emit('join', server)">
                 <Icon icon="heroicons:play" class="action-icon" />
               </button>
@@ -311,12 +315,12 @@ const getTagLabel = (tag: string): string => {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  min-width: 760px;
+  min-width: 810px;
 }
 
 .custom-thead {
   display: grid;
-  grid-template-columns: 2fr 1.5fr 100px 64px 100px 64px 80px;
+  grid-template-columns: 2fr 1.5fr 100px 64px 100px 64px 130px;
   gap: 12px;
   padding: 0 16px 8px;
   border-bottom: 1px solid color-mix(in oklab, var(--color-base-content) 8%, transparent);
@@ -398,7 +402,7 @@ const getTagLabel = (tag: string): string => {
 .custom-row {
   position: relative;
   display: grid;
-  grid-template-columns: 2fr 1.5fr 100px 64px 100px 64px 80px;
+  grid-template-columns: 2fr 1.5fr 100px 64px 100px 64px 130px;
   gap: 12px;
   align-items: center;
   padding: 16px;
@@ -687,6 +691,18 @@ const getTagLabel = (tag: string): string => {
 
     &:active {
       transform: scale(0.95);
+    }
+
+    &.copy-btn {
+      color: rgba(56, 189, 248, 0.85);
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+
+      &:hover {
+        background: rgba(56, 189, 248, 0.2);
+        color: #38bdf8;
+        border-color: rgba(56, 189, 248, 0.4);
+      }
     }
 
     &.join-btn {

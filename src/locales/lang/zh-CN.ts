@@ -6,14 +6,14 @@ export default {
     home: '首页',
     server: '服务器',
     tools: '工具',
-    setting: '设置',
-    about: '关于'
+    setting: '设置'
   },
   common: {
     loading: '加载中...',
     cancel: '取消',
     confirm: '确认',
-    placeholder: '占位页面，待补充内容'
+    placeholder: '占位页面，待补充内容',
+    developing: '开发中，敬请期待'
   },
   nav: {
     toggleMenu: '切换菜单',
@@ -29,6 +29,8 @@ export default {
       '基于 Electron + Vue 3 + Vite 构建的 CS2 游戏服务器管理启动器，为社区服务器管理提供一站式解决方案。',
     learnMore: '了解功能',
     goServer: '前往服务器',
+    navTitle: '常用导航',
+    spotlightTitle: '热门推荐',
     section: {
       featuresTitle: '核心功能',
       featuresDesc: '为 CS2 社区服务器管理打造的桌面启动器，功能持续迭代中',
@@ -110,6 +112,16 @@ export default {
       knife_round: '刀战局',
       bomb_planted: 'C4 已安放',
       bomb_defused: 'C4 已拆除'
+    },
+    joinDialog: {
+      joinWhen: '触发挤服人数',
+      personCount: '{count} 人',
+      joinDelay: '挤服延迟',
+      delayMs: '{delay} ms',
+      delayTip: '每次尝试加入的间隔时间，过短可能导致频繁重连',
+      startJoin: '开始挤服',
+      copiedTip: '已复制',
+      copyTip: 'steam 连接指令已复制，启动游戏后自动加入'
     }
   },
   tools: {
@@ -127,8 +139,23 @@ export default {
     title: '关于'
   },
   footer: {
-    brand: '碧蓝档案情报站',
+    brand: '蔚蓝档案登录器',
     techStack: 'Vue 3 · TypeScript · Vite · Pinia · Axios · daisyUI'
+  },
+  login: {
+    title: '账号登录',
+    desc: '登录后即可体验完整的社区服务',
+    waiting: '等待授权窗口回传结果，请勿关闭本页面…',
+    providerLabel: '选择登录方式',
+    notLoggedIn: '未登录',
+    userMenu: '用户菜单',
+    logout: '退出登录',
+    provider: {
+      qq: 'QQ 登录',
+      qqDesc: '使用 QQ 账号快速登录',
+      steam: 'Steam 登录',
+      steamDesc: '使用 Steam 账号快速登录'
+    }
   },
   lang: {
     zhCN: '简体中文',

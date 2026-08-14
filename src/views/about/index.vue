@@ -1,9 +1,0 @@
-<script setup lang="ts">
-import PagePlaceholder from '@/components/common/PagePlaceholder.vue';
-
-defineOptions({ name: 'AboutView' });
-</script>
-
-<template>
-  <PagePlaceholder title-key="routes.about" icon="heroicons:information-circle" />
-</template>

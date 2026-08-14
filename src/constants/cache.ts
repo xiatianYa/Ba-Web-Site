@@ -9,7 +9,9 @@ export const APP_STORAGE_KEYS = {
   /** 服务器页视图模式（card 卡片 / table 表格） */
   SERVER_VIEW: 'serverView' as const,
   /** 侧边栏折叠状态 */
-  SIDER_COLLAPSED: 'siderCollapsed' as const
+  SIDER_COLLAPSED: 'siderCollapsed' as const,
+  /** 挤服配置（触发人数 + 挤服延迟） */
+  GAME_JOIN_CONFIG: 'gameJoinConfig' as const
 };
 
 /** 认证存储键 */

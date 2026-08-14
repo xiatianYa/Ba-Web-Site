@@ -4,16 +4,16 @@ export default {
   },
   routes: {
     home: 'Home',
-    server: 'Server',
+    server: 'Servers',
     tools: 'Tools',
-    setting: 'Settings',
-    about: 'About'
+    setting: 'Settings'
   },
   common: {
     loading: 'Loading...',
     cancel: 'Cancel',
     confirm: 'Confirm',
-    placeholder: 'Placeholder page, content pending'
+    placeholder: 'Placeholder page, content pending',
+    developing: 'Under development, stay tuned'
   },
   nav: {
     toggleMenu: 'Toggle menu',
@@ -29,6 +29,8 @@ export default {
       'A CS2 game server management launcher built with Electron + Vue 3 + Vite, providing a one-stop solution for community server management.',
     learnMore: 'Learn more',
     goServer: 'Go to Server',
+    navTitle: 'Quick Navigation',
+    spotlightTitle: 'Highlights',
     section: {
       featuresTitle: 'Core Features',
       featuresDesc: 'A desktop launcher crafted for CS2 community server management, continuously evolving',
@@ -104,12 +106,22 @@ export default {
     mapPhase: {
       live: 'Live',
       warmup: 'Warmup',
-      halftime: 'Half-time',
+      halftime: 'Halftime',
       over: 'Over',
       pistolround: 'Pistol round',
       knife_round: 'Knife round',
       bomb_planted: 'Bomb planted',
       bomb_defused: 'Bomb defused'
+    },
+    joinDialog: {
+      joinWhen: 'Join when players reach',
+      personCount: '{count} players',
+      joinDelay: 'Join delay',
+      delayMs: '{delay} ms',
+      delayTip: 'Interval between join attempts; too short may cause frequent reconnects',
+      startJoin: 'Start joining',
+      copiedTip: 'Copied',
+      copyTip: 'Steam connect command copied, auto-joins after game starts'
     }
   },
   tools: {
@@ -127,8 +139,23 @@ export default {
     title: 'About'
   },
   footer: {
-    brand: 'Blue Archive Info Site',
+    brand: 'Blue Archive Launcher',
     techStack: 'Vue 3 · TypeScript · Vite · Pinia · Axios · daisyUI'
+  },
+  login: {
+    title: 'Sign in',
+    desc: 'Sign in to unlock the full community experience',
+    waiting: 'Waiting for the auth window to respond, please keep this page open…',
+    providerLabel: 'Choose a sign-in method',
+    notLoggedIn: 'Not signed in',
+    userMenu: 'User menu',
+    logout: 'Sign out',
+    provider: {
+      qq: 'QQ',
+      qqDesc: 'Sign in quickly with your QQ account',
+      steam: 'Steam',
+      steamDesc: 'Sign in quickly with your Steam account'
+    }
   },
   lang: {
     zhCN: '简体中文',

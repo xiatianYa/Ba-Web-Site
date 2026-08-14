@@ -13,8 +13,7 @@ export const NAV_MENUS: NavMenuItem[] = [
   { name: 'home', path: '/', titleKey: 'routes.home', icon: 'heroicons:home' },
   { name: 'server', path: '/server', titleKey: 'routes.server', icon: 'heroicons:server-stack' },
   { name: 'tools', path: '/tools', titleKey: 'routes.tools', icon: 'heroicons:wrench-screwdriver' },
-  { name: 'setting', path: '/setting', titleKey: 'routes.setting', icon: 'heroicons:cog-6-tooth' },
-  { name: 'about', path: '/about', titleKey: 'routes.about', icon: 'heroicons:information-circle' }
+  { name: 'setting', path: '/setting', titleKey: 'routes.setting', icon: 'heroicons:cog-6-tooth' }
 ];
 
 /** 判断菜单项是否处于激活态（/ 精确匹配，其余按前缀匹配） */

@@ -10,6 +10,7 @@ import { APP_STORAGE_KEYS } from '@/constants/cache';
 import ServerCardList from './modules/server-card-list.vue';
 import ServerTableList from './modules/server-table-list.vue';
 import CommunityList from './modules/community-list.vue';
+import GameJoinDialog from './modules/game-join-dialog.vue';
 
 defineOptions({ name: 'ServerView' });
 
@@ -61,9 +62,21 @@ function copyServerAddr(server: Api.Game.SeverVo) {
   copyText(server.connectStr);
 }
 
-/** 自动加入（复制 steam 协议链接，可唤起本机 CS2） */
-function autoJoinServer(server: Api.Game.SeverVo) {
+/** 挤服窗口显隐与目标服务器 */
+const joinDialogVisible = ref(false);
+const joinDialogServer = ref<Api.Game.SeverVo | null>(null);
+
+/** 打开挤服窗口（展示服务器信息 + 配置触发人数/延迟） */
+function openJoinDialog(server: Api.Game.SeverVo) {
+  joinDialogServer.value = server;
+  joinDialogVisible.value = true;
+}
+
+/** 开始挤服：Web 端无法直接启动游戏，复制 steam 协议链接（可唤起本机 CS2） */
+function handleStartJoin(server: Api.Game.SeverVo) {
   copyText(`steam://connect/${server.connectStr}`);
+  showToast(t('server.joinDialog.copyTip'));
+  joinDialogVisible.value = false;
 }
 
 /** 切换视图模式并持久化 */
@@ -102,8 +115,11 @@ onUnmounted(() => {
     <div class="flex flex-col gap-6 lg:flex-row lg:items-start">
       <!-- 主区 -->
       <div class="min-w-0 flex-1">
-        <div class="mb-6 flex flex-wrap items-center gap-3">
-          <h1 class="text-3xl font-extrabold tracking-tight">{{ $t('server.title') }}</h1>
+        <div class="mb-1 flex flex-wrap items-center gap-3">
+          <div class="flex items-center gap-2">
+            <Icon icon="heroicons:server-stack" class="h-4 w-4 text-indigo-500" />
+            <h1 class="text-base font-bold tracking-tight">{{ $t('server.title') }}</h1>
+          </div>
           <div class="ml-auto flex items-center gap-2">
             <!-- 连接状态（点击重连） -->
             <button class="conn-btn" :class="wsStatus" :title="$t('server.reconnect')" @click="reconnectWs">
@@ -138,15 +154,19 @@ onUnmounted(() => {
 
         <!-- 卡片视图 -->
         <ServerCardList v-else-if="viewMode === 'card'" :servers="filteredServerList" @join="joinServer"
-          @copy="copyServerAddr" @auto-join="autoJoinServer" />
+          @copy="copyServerAddr" @auto-join="openJoinDialog" />
 
         <!-- 表格视图 -->
-        <ServerTableList v-else :servers="filteredServerList" @join="joinServer" @auto-join="autoJoinServer" />
+        <ServerTableList v-else :servers="filteredServerList" @join="joinServer" @copy="copyServerAddr"
+          @auto-join="openJoinDialog" />
       </div>
 
       <!-- 右侧社区分类栏 -->
       <CommunityList :selected-id="selectedCommunityId" @select="handleSelectCommunity" />
     </div>
+
+    <!-- 挤服窗口 -->
+    <GameJoinDialog v-model:visible="joinDialogVisible" :server="joinDialogServer" @start-join="handleStartJoin" />
 
     <!-- 复制成功提示 -->
     <div v-if="toastMsg" class="toast toast-center toast-middle z-50">

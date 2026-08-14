@@ -1,5 +1,6 @@
 import { request, type RequestResult } from '@/service/request';
 
+export * from './auth';
 export * from './game/community';
 export * from './system/dict';
 

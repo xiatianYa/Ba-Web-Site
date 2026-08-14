@@ -34,12 +34,6 @@ function createVueRoutes(): RouteRecordRaw[] {
           name: 'setting',
           component: () => import('@/views/setting/index.vue'),
           meta: { title: 'routes.setting' }
-        },
-        {
-          path: 'about',
-          name: 'about',
-          component: () => import('@/views/about/index.vue'),
-          meta: { title: 'routes.about' }
         }
       ]
     },
