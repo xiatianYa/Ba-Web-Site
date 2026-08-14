@@ -6,13 +6,19 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "commit": "git-cz",
+    "commit:check": "commitlint --from=HEAD~1 --to=HEAD"
   },
   "devDependencies": {
+    "@commitlint/cli": "^20.5.3",
+    "@commitlint/config-conventional": "^20.5.3",
     "@iconify-json/heroicons": "^1.2.3",
     "@types/node": "^26.2.0",
     "@types/nprogress": "^0.2.3",
     "@vitejs/plugin-vue": "^6.0.8",
+    "commitizen": "^4.3.1",
+    "cz-customizable": "^7.5.4",
     "nprogress": "^0.2.0",
     "typescript": "^5.9.3",
     "vite": "^8.2.0",
@@ -32,5 +38,13 @@
     "vue": "^3.5.41",
     "vue-i18n": "^11.4.8",
     "vue-router": "^5.2.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-customizable"
+    },
+    "cz-customizable": {
+      "config": ".cz-config.cjs"
+    }
   }
 }
