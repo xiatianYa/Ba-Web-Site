@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import PagePlaceholder from '@/components/common/PagePlaceholder.vue';
 
-defineOptions({ name: 'AboutView' });
+defineOptions({ name: 'ToolsView' });
 </script>
 
 <template>
-  <PagePlaceholder title-key="routes.about" icon="heroicons:information-circle" />
+  <PagePlaceholder title-key="routes.tools" icon="heroicons:wrench-screwdriver" />
 </template>

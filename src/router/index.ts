@@ -2,7 +2,7 @@ import type { App } from 'vue';
 import { createRouter, createWebHashHistory, type RouteRecordRaw } from 'vue-router';
 import { createRouterGuard } from './guard';
 
-/** 应用路由表（新增页面在此追加） */
+/** 应用路由表（新增页面在此追加，meta.title 为 locales 中的翻译键） */
 function createVueRoutes(): RouteRecordRaw[] {
   return [
     {
@@ -15,19 +15,31 @@ function createVueRoutes(): RouteRecordRaw[] {
           path: '',
           name: 'home',
           component: () => import('@/views/home/index.vue'),
-          meta: { title: '首页' }
+          meta: { title: 'routes.home' }
+        },
+        {
+          path: 'server',
+          name: 'server',
+          component: () => import('@/views/server/index.vue'),
+          meta: { title: 'routes.server' }
+        },
+        {
+          path: 'tools',
+          name: 'tools',
+          component: () => import('@/views/tools/index.vue'),
+          meta: { title: 'routes.tools' }
         },
         {
           path: 'setting',
           name: 'setting',
           component: () => import('@/views/setting/index.vue'),
-          meta: { title: '设置' }
+          meta: { title: 'routes.setting' }
         },
         {
           path: 'about',
           name: 'about',
           component: () => import('@/views/about/index.vue'),
-          meta: { title: '关于' }
+          meta: { title: 'routes.about' }
         }
       ]
     },

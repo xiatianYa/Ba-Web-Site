@@ -110,16 +110,16 @@ body {
   opacity: 0;
 }
 
-/* 移动端下拉菜单动画 */
-.dropdown-enter-active,
-.dropdown-leave-active {
+/* 移动端浮动菜单动画 */
+.floating-menu-enter-active,
+.floating-menu-leave-active {
   transition:
-    opacity 0.25s ease,
-    transform 0.25s ease;
+    opacity 0.2s ease,
+    transform 0.2s ease;
 }
 
-.dropdown-enter-from,
-.dropdown-leave-to {
+.floating-menu-enter-from,
+.floating-menu-leave-to {
   opacity: 0;
-  transform: translateY(-8px);
+  transform: translateY(-10px) scale(0.98);
 }

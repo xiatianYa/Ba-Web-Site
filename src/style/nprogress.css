@@ -1,0 +1,19 @@
+/* 路由进度条：跟随主题主色 */
+#nprogress {
+  pointer-events: none;
+}
+
+#nprogress .bar {
+  background: var(--color-primary);
+  height: 3px;
+}
+
+#nprogress .peg {
+  box-shadow:
+    0 0 10px var(--color-primary),
+    0 0 5px var(--color-primary);
+}
+
+#nprogress .spinner {
+  display: none;
+}

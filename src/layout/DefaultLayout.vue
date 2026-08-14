@@ -24,10 +24,10 @@ defineOptions({ name: 'DefaultLayout' });
         class="mx-auto flex max-w-6xl flex-col items-center gap-2 px-4 py-6 text-sm text-base-content/60 sm:flex-row sm:justify-between"
       >
         <span class="flex items-center gap-2">
-          <span class="font-semibold text-base-content/80">Ba-Web-Site</span>
-          <span>碧蓝档案情报站</span>
+          <span class="font-semibold text-base-content/80">{{ $t('system.title') }}</span>
+          <span>{{ $t('footer.brand') }}</span>
         </span>
-        <span>Vue 3 · TypeScript · Vite · Pinia · Axios · daisyUI</span>
+        <span>{{ $t('footer.techStack') }}</span>
       </div>
     </footer>
   </div>
