@@ -31,4 +31,6 @@ export const $t = i18n.global.t;
 export function setLocale(locale: App.I18n.LangType) {
   i18n.global.locale.value = locale;
   localStg.set(APP_STORAGE_KEYS.LANG, locale);
+  // 同步 html lang 属性（便于无障碍与 SEO）
+  document.documentElement.lang = locale;
 }

@@ -1,5 +1,8 @@
 import { request, type RequestResult } from '@/service/request';
 
+export * from './game/community';
+export * from './system/dict';
+
 /** 首页数据（示例） */
 export interface HomeData {
   notice: string;

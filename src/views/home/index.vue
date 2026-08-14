@@ -1,13 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { Icon } from '@iconify/vue';
-import { useI18n } from 'vue-i18n';
-import { getHomeData } from '@/service/api';
-import { isSuccessResult } from '@/service/request';
 
 defineOptions({ name: 'HomeView' });
-
-const { t } = useI18n();
 
 /** 核心功能卡片（icon 对应 plugins/icons.ts 中注册的图标） */
 const features = [
@@ -37,20 +31,12 @@ const techStack = [
   'electron-builder'
 ];
 
-const loading = ref(false);
-const notice = ref('');
-
-/** 示例：调用封装好的 axios 接口，验证请求链路 */
-async function handleFetch() {
-  loading.value = true;
-  const res = await getHomeData();
-  if (isSuccessResult(res)) {
-    notice.value = res.data.notice;
-  } else {
-    notice.value = t('home.requestFailed', { message: res.error.message });
-  }
-  loading.value = false;
-}
+/** 下载平台（icon 对应 plugins/icons.ts 中注册的图标；available 为 false 的平台暂未开放下载） */
+const downloadPlatforms = [
+  { key: 'windows', icon: 'mdi:windows', titleKey: 'home.download.windows', available: true, url: 'https://www.bluearchive.top/statics/soft/蔚蓝档案登录器-Windows-Setup.exe' },
+  { key: 'linux', icon: 'mdi:linux', titleKey: 'home.download.linux', available: false, url: '' },
+  { key: 'mac', icon: 'mdi:apple', titleKey: 'home.download.mac', available: false, url: '' }
+];
 
 /** 平滑滚动到核心功能区 */
 function scrollToFeatures() {
@@ -59,7 +45,7 @@ function scrollToFeatures() {
 </script>
 
 <template>
-  <div class="mx-auto max-w-6xl px-4 py-10 sm:py-14">
+  <div class="mx-auto w-full max-w-[140rem] px-4 py-8 sm:px-6 sm:py-10">
     <!-- Hero 区域 -->
     <section
       class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-sky-400 via-blue-500 to-indigo-600 text-white shadow-xl shadow-blue-500/10"
@@ -97,6 +83,34 @@ function scrollToFeatures() {
           <router-link to="/server" class="btn btn-lg btn-ghost text-white hover:bg-white/10">
             {{ $t('home.goServer') }}
           </router-link>
+        </div>
+      </div>
+    </section>
+
+    <!-- 下载区 -->
+    <section class="mt-16">
+      <div class="text-center">
+        <h2 class="text-2xl font-extrabold tracking-tight sm:text-3xl">{{ $t('home.section.downloadTitle') }}</h2>
+        <p class="mt-2 text-sm text-base-content/60 sm:text-base">{{ $t('home.section.downloadDesc') }}</p>
+      </div>
+
+      <div class="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <div
+          v-for="platform in downloadPlatforms"
+          :key="platform.key"
+          class="card bg-base-200 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-blue-500/5"
+        >
+          <div class="card-body items-center py-8 text-center">
+            <Icon :icon="platform.icon" class="h-10 w-10 text-base-content/80" />
+            <h3 class="mt-3 text-lg font-bold">{{ $t(platform.titleKey) }}</h3>
+            <p class="text-sm text-base-content/50">{{ $t('home.download.latest') }}</p>
+            <a v-if="platform.available" :href="platform.url" class="btn btn-primary btn-block mt-4">
+              {{ $t('home.download.action') }}
+            </a>
+            <button v-else disabled class="btn btn-block mt-4">
+              {{ $t('home.download.unavailable') }}
+            </button>
+          </div>
         </div>
       </div>
     </section>
@@ -141,55 +155,6 @@ function scrollToFeatures() {
           <Icon icon="heroicons:code-bracket" class="h-4 w-4 opacity-60" />
           {{ name }}
         </span>
-      </div>
-    </section>
-
-    <!-- 请求链路验证 -->
-    <section class="mt-16">
-      <div class="card bg-base-200">
-        <div class="card-body items-center py-12 text-center sm:px-12">
-          <span class="grid h-12 w-12 place-items-center rounded-2xl bg-primary/10 text-primary">
-            <Icon icon="heroicons:arrow-path" class="h-6 w-6" />
-          </span>
-          <h2 class="mt-4 text-xl font-extrabold tracking-tight">{{ $t('home.section.testTitle') }}</h2>
-          <p class="mt-2 max-w-xl text-sm text-base-content/60 sm:text-base">{{ $t('home.section.testDesc') }}</p>
-
-          <button
-            class="btn btn-lg btn-primary mt-6"
-            :disabled="loading"
-            @click="handleFetch"
-          >
-            <span v-if="loading" class="loading loading-spinner loading-sm"></span>
-            {{ loading ? $t('home.requesting') : $t('home.testRequest') }}
-          </button>
-
-          <p v-if="notice" class="mt-4 inline-block rounded-full bg-primary/10 px-4 py-1.5 text-sm text-primary">
-            {{ notice }}
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- CTA 区域 -->
-    <section class="mt-16">
-      <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-500 via-blue-600 to-sky-500 p-8 text-center text-white shadow-xl shadow-blue-500/10 sm:p-12">
-        <div class="pointer-events-none absolute -left-10 -top-10 h-44 w-44 rounded-full bg-white/10 blur-2xl"></div>
-        <div class="pointer-events-none absolute -bottom-14 -right-10 h-52 w-52 rounded-full bg-white/10 blur-3xl"></div>
-
-        <div class="relative">
-          <Icon icon="heroicons:rocket-launch" class="mx-auto h-10 w-10 text-white/80" />
-          <h2 class="mt-4 text-2xl font-extrabold tracking-tight sm:text-3xl">{{ $t('home.section.ctaTitle') }}</h2>
-          <p class="mx-auto mt-2 max-w-xl text-white/80">{{ $t('home.section.ctaDesc') }}</p>
-
-          <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
-            <router-link to="/server" class="btn btn-lg btn-primary border-0 shadow-lg shadow-blue-900/20">
-              {{ $t('home.goServer') }}
-            </router-link>
-            <router-link to="/setting" class="btn btn-lg btn-ghost text-white hover:bg-white/10">
-              {{ $t('home.goSetting') }}
-            </router-link>
-          </div>
-        </div>
       </div>
     </section>
   </div>

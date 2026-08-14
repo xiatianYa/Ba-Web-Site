@@ -7,6 +7,10 @@ declare namespace StorageType {
     theme: string;
     /** 主题方案（dark / light） */
     themeScheme: 'dark' | 'light';
+    /** 服务器页视图模式（card / table） */
+    serverView: 'card' | 'table';
+    /** 侧边栏折叠状态 */
+    siderCollapsed: boolean;
     /** 登录令牌 */
     token: string;
     /** 刷新令牌 */

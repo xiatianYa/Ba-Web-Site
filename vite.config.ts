@@ -13,11 +13,12 @@ export default defineConfig({
   server: {
     host: true,
     port: 5173,
-    // 开发环境代理示例：将 /api 请求转发到后端服务（按需修改 target）
+    // 开发环境代理：将 /api 前缀去除后转发到后端服务（后端路由不含 /api，如 /gameCommunity/list）
     proxy: {
       '/api': {
         target: 'http://localhost:8080',
-        changeOrigin: true
+        changeOrigin: true,
+        rewrite: path => path.replace(/^\/api/, '')
       }
     }
   }
