@@ -1,6 +1,6 @@
 @import 'tailwindcss';
 
-/* 自定义主题：蓝档案风格（浅色 / 深色） */
+/* 自定义主题：碧蓝档案风格（浅色 / 深色） */
 @plugin "daisyui/theme" {
   name: "ba-light";
   default: true;

@@ -34,7 +34,7 @@ defineOptions({ name: 'DefaultLayout' });
             rel="noopener noreferrer"
             class="transition-colors hover:text-primary"
           >
-            Copyright MIT © 2024 夏天
+            Copyright MIT © 2024 - 2026 夏天
           </a>
           <a
             href="https://beian.miit.gov.cn/"

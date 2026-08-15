@@ -6,6 +6,13 @@ import type { ServerWebsocketType } from './types';
 const WS_BASE = import.meta.env.VITE_WS_URL || (import.meta.env.DEV ? 'ws://127.0.0.1:8080' : 'wss://www.bluearchive.top');
 
 /**
+ * WebSocket 路径前缀（与部署环境保持一致）：
+ * - 开发环境直连后端 8080，路径与后端 @ServerEndpoint 一致（/ws/...）
+ * - 生产环境经 nginx 反代，需携带 /websocket 前缀（nginx 映射 /websocket/ws/* → 后端 /ws/*）
+ */
+const WS_PATH = import.meta.env.DEV ? '/ws' : '/websocket/ws';
+
+/**
  * 构建连接地址：
  * - 已登录：走鉴权端点 /ws/server/{token}（对应后端 @ServerEndpoint("/ws/server/{token}")），以路径参数传递 token
  * - 未登录：走公共端点 /ws/public/server（无需鉴权，推送服务器列表 202 / 游戏实时数据 204）
@@ -13,9 +20,9 @@ const WS_BASE = import.meta.env.VITE_WS_URL || (import.meta.env.DEV ? 'ws://127.
 function buildWsUrl(): string {
   const authStore = useAuthStore();
   if (authStore.isLogin) {
-    return `${WS_BASE}/websocket/ws/server/${authStore.accessToken}`;
+    return `${WS_BASE}${WS_PATH}/server/${authStore.accessToken}`;
   }
-  return `${WS_BASE}/websocket/ws/public/server`;
+  return `${WS_BASE}${WS_PATH}/public/server`;
 }
 
 /** 服务器 WebSocket 单例实例 */

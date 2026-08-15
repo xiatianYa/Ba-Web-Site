@@ -25,7 +25,7 @@ async function setupApp() {
 
   app.mount('#app');
 
-  // 全局蔚蓝档案风格鼠标点击特效（DOM 就绪后初始化）
+  // 全局碧蓝档案风格鼠标点击特效（DOM 就绪后初始化）
   setupClickFx();
 }
 

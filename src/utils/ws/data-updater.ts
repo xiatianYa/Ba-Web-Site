@@ -48,10 +48,6 @@ function updateServerInfoMap(
       syncServerInfoToList(gameStore.serverList, serverId, info);
     }
   }
-
-  // 若服务器不在最终的 serverInfoMap 中，则清空列表中对应项的比分
-  const presentIds = new Set(Object.keys(target).map(k => String(k)));
-  clearServerScoresIfMissing(gameStore.serverList, presentIds);
 }
 
 /**
@@ -71,25 +67,12 @@ function syncServerInfoToList(
     return str.length === 0 ? null : str;
   };
 
-  target.round = clean(info.round);
-  target.CTScore = clean(info.CTScore);
-  target.TScore = clean(info.TScore);
-  target.mapStage = clean(info.mapStage);
-  target.mapPhase = clean(info.mapPhase);
-}
-
-/**
- * 若列表中的服务器 serverId 不在 presentIds 集合里，则将其比分字段统一清空
- */
-function clearServerScoresIfMissing(list: Api.Game.SeverVo[], presentIds: Set<string>): void {
-  for (const item of list) {
-    if (presentIds.has(String(item.serverId))) continue;
-    item.round = null;
-    item.CTScore = null;
-    item.TScore = null;
-    item.mapStage = null;
-    item.mapPhase = null;
-  }
+  // 仅覆盖推送中实际存在的字段，避免部分数据把比分/回合置空导致闪烁
+  if (info.round !== undefined) target.round = clean(info.round);
+  if (info.CTScore !== undefined) target.CTScore = clean(info.CTScore);
+  if (info.TScore !== undefined) target.TScore = clean(info.TScore);
+  if (info.mapStage !== undefined) target.mapStage = clean(info.mapStage);
+  if (info.mapPhase !== undefined) target.mapPhase = clean(info.mapPhase);
 }
 
 /**

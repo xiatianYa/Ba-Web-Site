@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { Icon } from '@iconify/vue';
 import {
   getMapPhaseText,
-  calculatePastMinutes,
+  formatMapRuntimeZh,
   getPlayerLevel,
   getScoreLevel,
   getTypeColorHex,
@@ -158,9 +158,9 @@ const getDotFilled = (server: Api.Game.SeverVo) =>
               {{ getTypeLabel(server.type) }}
             </span>
             <span v-for="(tag, idx) in server.tag" :key="idx" class="tag tag-item">{{ getTagLabel(tag) }}</span>
-            <span v-if="server.dateTimeOriginal" class="online-time">
+            <span v-if="server.dateTimeOriginal" class="online-time" :title="$t('server.mapRuntime')">
               <Icon icon="heroicons:clock" class="online-time-icon" />
-              {{ $t('server.minutesAgo', { count: calculatePastMinutes(server.dateTimeOriginal) }) }}
+              {{ formatMapRuntimeZh(server.dateTimeOriginal) }}
             </span>
           </div>
         </div>
@@ -358,6 +358,7 @@ const getDotFilled = (server: Api.Game.SeverVo) =>
     align-items: center;
     margin-top: 6px;
     font-size: 13px;
+    min-width: 0;
 
     .translate-icon {
       font-size: 18px;
@@ -366,6 +367,7 @@ const getDotFilled = (server: Api.Game.SeverVo) =>
     }
 
     .map-label {
+      flex: 1;
       min-width: 0;
       white-space: nowrap;
       overflow: hidden;
@@ -407,18 +409,26 @@ const getDotFilled = (server: Api.Game.SeverVo) =>
       align-items: center;
       gap: 5px;
       margin-left: auto;
+      flex-shrink: 0;
       height: 20px;
       padding: 0 8px;
       border-radius: 10px;
       font-size: 11px;
       font-weight: 600;
       background: rgba(0, 0, 0, 0.45);
-      border: 1px solid rgba(102, 126, 234, 0.3);
+      border: 1px solid rgba(102, 126, 234, 0.35);
       white-space: nowrap;
+      transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 
       .online-time-icon {
         font-size: 12px;
         color: #667eea;
+      }
+
+      &:hover {
+        background: rgba(102, 126, 234, 0.22);
+        border-color: rgba(102, 126, 234, 0.6);
+        box-shadow: 0 0 8px rgba(102, 126, 234, 0.25);
       }
     }
   }
@@ -469,6 +479,7 @@ const getDotFilled = (server: Api.Game.SeverVo) =>
   align-items: center;
   gap: 6px;
   margin-left: auto;
+  flex-shrink: 0;
   height: 24px;
   padding: 0 10px;
   border-radius: 12px;

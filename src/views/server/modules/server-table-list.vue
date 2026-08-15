@@ -4,12 +4,10 @@ import { useI18n } from 'vue-i18n';
 import { Icon } from '@iconify/vue';
 import {
   getMapPhaseText,
-  formatMapRuntime,
-  getPingLevel,
+  formatMapRuntimeCn,
   getPlayerColor,
   getScoreLevel,
-  getTypeColorHex,
-  PING_COLORS
+  getTypeColorHex
 } from '@/hooks/business/server';
 import { useDict } from '@/hooks/business/use-dict';
 
@@ -28,7 +26,7 @@ const emit = defineEmits<{
 
 // 排序状态：none 默认 / asc 正序 / desc 倒序
 type SortOrder = 'none' | 'asc' | 'desc';
-type SortField = 'players' | 'ping' | null;
+type SortField = 'players' | null;
 
 const sortField = ref<SortField>(null);
 const sortOrder = ref<SortOrder>('none');
@@ -60,9 +58,6 @@ const sortedServers = computed(() => {
           if (sortField.value === 'players') {
             v1 = a.numPlayers ?? 0;
             v2 = b.numPlayers ?? 0;
-          } else if (sortField.value === 'ping') {
-            v1 = a.ping ?? Number.MAX_SAFE_INTEGER;
-            v2 = b.ping ?? Number.MAX_SAFE_INTEGER;
           }
 
           return sortOrder.value === 'asc' ? v1 - v2 : v2 - v1;
@@ -175,20 +170,6 @@ const getTagLabel = (tag: string): string => {
           />
           <Icon v-else icon="heroicons:chevron-up-down" class="sort-icon" />
         </div>
-        <div class="th th-ping sortable" @click="toggleSort('ping')">
-          <span>{{ $t('server.ping') }}</span>
-          <Icon
-            v-if="getSortOrder('ping') === 'asc'"
-            icon="heroicons:chevron-up"
-            class="sort-icon"
-          />
-          <Icon
-            v-else-if="getSortOrder('ping') === 'desc'"
-            icon="heroicons:chevron-down"
-            class="sort-icon"
-          />
-          <Icon v-else icon="heroicons:chevron-up-down" class="sort-icon" />
-        </div>
         <div class="th th-score">{{ $t('server.score') }}</div>
         <div class="th th-runtime">{{ $t('server.mapRuntime') }}</div>
         <div class="th th-action">{{ $t('server.operate') }}</div>
@@ -256,13 +237,6 @@ const getTagLabel = (tag: string): string => {
             </div>
           </div>
 
-          <!-- Ping -->
-          <div class="td td-ping">
-            <span class="ping-tag" :style="{ '--ping-color': PING_COLORS[getPingLevel(server.ping)] }">
-              {{ server.ping ? `${server.ping}ms` : '??' }}
-            </span>
-          </div>
-
           <!-- 比分 -->
           <div class="td td-score">
             <span
@@ -279,7 +253,10 @@ const getTagLabel = (tag: string): string => {
 
           <!-- 换图时长 -->
           <div class="td td-runtime">
-            <span class="runtime-text">{{ formatMapRuntime(server.dateTimeOriginal) }}</span>
+            <span class="runtime-chip">
+              <Icon icon="heroicons:clock" class="runtime-icon" />
+              {{ formatMapRuntimeCn(server.dateTimeOriginal) }}
+            </span>
           </div>
 
           <!-- 操作 -->
@@ -320,7 +297,7 @@ const getTagLabel = (tag: string): string => {
 
 .custom-thead {
   display: grid;
-  grid-template-columns: 2fr 1.5fr 100px 64px 100px 64px 130px;
+  grid-template-columns: 2fr 1.5fr 100px 120px 90px 130px;
   gap: 12px;
   padding: 0 16px 8px;
   border-bottom: 1px solid color-mix(in oklab, var(--color-base-content) 8%, transparent);
@@ -402,7 +379,7 @@ const getTagLabel = (tag: string): string => {
 .custom-row {
   position: relative;
   display: grid;
-  grid-template-columns: 2fr 1.5fr 100px 64px 100px 64px 130px;
+  grid-template-columns: 2fr 1.5fr 100px 120px 90px 130px;
   gap: 12px;
   align-items: center;
   padding: 16px;
@@ -570,23 +547,6 @@ const getTagLabel = (tag: string): string => {
   }
 }
 
-/* Ping */
-.td-ping {
-  .ping-tag {
-    display: inline-flex;
-    align-items: center;
-    height: 22px;
-    padding: 0 8px;
-    border-radius: 11px;
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--ping-color);
-    background: color-mix(in oklab, var(--ping-color) 10%, transparent);
-    border: 1px solid color-mix(in oklab, var(--ping-color) 35%, transparent);
-    white-space: nowrap;
-  }
-}
-
 /* 比分 */
 .td-score {
   .stat-chip {
@@ -655,13 +615,33 @@ const getTagLabel = (tag: string): string => {
   }
 }
 
-/* 换图时长 */
+/* 换图时长（按钮风格） */
 .td-runtime {
-  .runtime-text {
+  .runtime-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    height: 22px;
+    padding: 0 8px;
+    border-radius: 11px;
     font-size: 12px;
     font-weight: 600;
-    color: color-mix(in oklab, var(--color-base-content) 70%, transparent);
+    color: color-mix(in oklab, var(--color-base-content) 75%, transparent);
+    background: color-mix(in oklab, var(--color-base-content) 6%, transparent);
+    border: 1px solid color-mix(in oklab, var(--color-base-content) 15%, transparent);
     white-space: nowrap;
+    transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+
+    .runtime-icon {
+      font-size: 13px;
+      color: #667eea;
+    }
+
+    &:hover {
+      background: rgba(102, 126, 234, 0.15);
+      border-color: rgba(102, 126, 234, 0.5);
+      box-shadow: 0 0 8px rgba(102, 126, 234, 0.2);
+    }
   }
 }
 

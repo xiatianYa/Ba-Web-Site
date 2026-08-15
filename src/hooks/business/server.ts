@@ -1,9 +1,6 @@
 import { useI18n } from 'vue-i18n';
 import dayjs from 'dayjs';
 
-/** Ping 等级 */
-export type PingLevel = 'normal' | 'warning' | 'error' | 'unknown';
-
 /**
  * 服务器比赛阶段文案（来自 i18n server.mapPhase.*，未配置时返回原值）
  */
@@ -21,22 +18,24 @@ export function calculatePastMinutes(time?: string | null): number {
   return Math.max(dayjs().diff(dayjs(time), 'minute'), 0);
 }
 
-/** 地图运行时长：Xh Ym / Xm（无换图时间返回 '-'） */
-export function formatMapRuntime(time?: string | null): string {
+/** 地图运行时长（中文，时/分钟后缀）：X分钟 / X时Y分钟（无换图时间返回 '-'） */
+export function formatMapRuntimeCn(time?: string | null): string {
   if (!time) return '-';
   const minutes = Math.max(dayjs().diff(dayjs(time), 'minute'), 0);
-  if (minutes < 60) return `${minutes}m`;
+  if (minutes < 60) return `${minutes}分钟`;
   const hours = Math.floor(minutes / 60);
   const mins = minutes % 60;
-  return mins > 0 ? `${hours}h ${mins}m` : `${hours}h`;
+  return mins > 0 ? `${hours}时${mins}分钟` : `${hours}时`;
 }
 
-/** 获取 Ping 等级（参考 ping_level 字典阈值） */
-export function getPingLevel(ping?: number | null): PingLevel {
-  if (ping == null) return 'unknown';
-  if (ping < 70) return 'normal';
-  if (ping < 100) return 'warning';
-  return 'error';
+/** 地图运行时长（中文，后缀单位为分钟）：X分钟 / X小时Y分钟（无换图时间返回 '-'） */
+export function formatMapRuntimeZh(time?: string | null): string {
+  if (!time) return '-';
+  const minutes = Math.max(dayjs().diff(dayjs(time), 'minute'), 0);
+  if (minutes < 60) return `${minutes}分钟`;
+  const hours = Math.floor(minutes / 60);
+  const mins = minutes % 60;
+  return mins > 0 ? `${hours}小时${mins}分钟` : `${hours}小时`;
 }
 
 /** 在线人数等级（1-5），用于人数方格与徽标颜色 */
@@ -64,14 +63,6 @@ export const PLAYER_LEVEL_COLORS: Record<number, string> = {
   3: '#ffa325',
   4: '#ff4f00',
   5: '#ff0000'
-};
-
-/** Ping 等级对应的徽标主色 */
-export const PING_COLORS: Record<PingLevel, string> = {
-  normal: '#22c55e',
-  warning: '#f59e0b',
-  error: '#ef4444',
-  unknown: '#9ca3af'
 };
 
 /** 比分等级（CT 领先 / T 领先 / 平局） */

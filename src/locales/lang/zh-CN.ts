@@ -20,7 +20,7 @@ export default {
     switchLanguage: '切换语言'
   },
   home: {
-    badge: '蓝档案社区 · 官方登录器',
+    badge: '碧蓝档案登录器',
     title: 'BaLauncher',
     description:
       '专为 CS2 社区服务器打造的桌面登录器：实时查询服务器状态、一键加入服务器、多社区集中管理与数据统计，一站式简化服务器管理。',
@@ -189,7 +189,7 @@ export default {
     title: '关于'
   },
   footer: {
-    brand: '蔚蓝档案登录器',
+    brand: '碧蓝档案登录器',
     techStack: 'Vue 3 · TypeScript · Vite · Pinia · Axios · daisyUI'
   },
   login: {

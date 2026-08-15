@@ -20,7 +20,7 @@ const downloadPlatforms: DownloadPlatform[] = [
     titleKey: 'home.download.windows',
     sysKey: 'home.download.sysWin',
     available: true,
-    url: 'https://www.bluearchive.top/statics/soft/蔚蓝档案登录器-Windows-Setup.exe'
+    url: 'https://www.bluearchive.top/statics/soft/碧蓝档案登录器-Windows-Setup.exe'
   },
   {
     key: 'linux',
