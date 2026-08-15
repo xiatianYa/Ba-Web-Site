@@ -11,7 +11,7 @@ import img940326 from '@/assets/home/940326.webp';
 defineOptions({ name: 'HeroBanner' });
 
 /** Windows 版下载直链 */
-const DOWNLOAD_URL = 'https://www.bluearchive.top/statics/soft/碧蓝档案登录器-Windows-Setup.exe';
+const DOWNLOAD_URL = 'https://www.bluearchive.top/statics/soft/BaLuncher-Windows-Setup.exe';
 
 /** 确定性伪随机：同一序号每次渲染取值一致，避免闪烁 */
 function rand(seed: number) {

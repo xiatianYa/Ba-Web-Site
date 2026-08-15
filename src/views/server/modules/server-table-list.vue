@@ -7,7 +7,8 @@ import {
   formatMapRuntimeCn,
   getPlayerColor,
   getScoreLevel,
-  getTypeColorHex
+  getTypeColorHex,
+  compareServerSort
 } from '@/hooks/business/server';
 import { useDict } from '@/hooks/business/use-dict';
 
@@ -46,7 +47,7 @@ const getScoreChipColor = (server: Api.Game.SeverVo): string => {
   return level === 'ct' ? '#60a5fa' : level === 't' ? '#fbbf24' : '#e5e7eb';
 };
 
-/** 排序后的服务器列表：在线在前、离线置底 */
+/** 排序后的服务器列表：在线在前、离线置底；未点击表头排序时按编号(#N)优先升序，无编号按 sort 升序 */
 const sortedServers = computed(() => {
   const sortFn =
     sortField.value === null || sortOrder.value === 'none'
@@ -63,13 +64,14 @@ const sortedServers = computed(() => {
           return sortOrder.value === 'asc' ? v1 - v2 : v2 - v1;
         };
 
+  // 默认排序：编号(#N)优先升序；无编号按 sort 升序（0 最前，null 置底）
+  const bySort = compareServerSort;
+
   const online = props.servers.filter(s => !isServerOffline(s));
   const offline = props.servers.filter(isServerOffline);
 
-  if (sortFn) {
-    online.sort(sortFn);
-    offline.sort(sortFn);
-  }
+  online.sort(sortFn ?? bySort);
+  offline.sort(sortFn ?? bySort);
 
   return [...online, ...offline];
 });

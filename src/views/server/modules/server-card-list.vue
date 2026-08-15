@@ -8,6 +8,7 @@ import {
   getPlayerLevel,
   getScoreLevel,
   getTypeColorHex,
+  compareServerSort,
   PLAYER_LEVEL_COLORS,
   SCORE_COLORS
 } from '@/hooks/business/server';
@@ -26,10 +27,13 @@ const emit = defineEmits<{
   (e: 'autoJoin', server: Api.Game.SeverVo): void;
 }>();
 
-/** 展示列表：在线服务器在前、离线置底（组内保持原有顺序） */
+/** 排序比较：编号(#N)优先升序；无编号按 sort 升序（0 最前，null 置底） */
+const bySort = compareServerSort;
+
+/** 展示列表：在线服务器在前、离线置底；组内按上述排序 */
 const displayServers = computed(() => {
-  const online = props.servers.filter(s => s.isOnline);
-  const offline = props.servers.filter(s => !s.isOnline);
+  const online = props.servers.filter(s => s.isOnline).sort(bySort);
+  const offline = props.servers.filter(s => !s.isOnline).sort(bySort);
   return [...online, ...offline];
 });
 

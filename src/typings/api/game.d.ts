@@ -107,6 +107,8 @@ declare namespace Api {
       serverName: string;
       /** 服务器模式 */
       mode: number;
+      /** 排序值（0 最前，升序展示） */
+      sort: number | null;
       /** 游玩人数 */
       numPlayers: number;
       /** 最大在线人数 */
