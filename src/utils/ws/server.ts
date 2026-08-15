@@ -13,9 +13,9 @@ const WS_BASE = import.meta.env.VITE_WS_URL || (import.meta.env.DEV ? 'ws://127.
 function buildWsUrl(): string {
   const authStore = useAuthStore();
   if (authStore.isLogin) {
-    return `${WS_BASE}/ws/server/${authStore.accessToken}`;
+    return `${WS_BASE}/websocket/ws/server/${authStore.accessToken}`;
   }
-  return `${WS_BASE}/ws/public/server`;
+  return `${WS_BASE}/websocket/ws/public/server`;
 }
 
 /** 服务器 WebSocket 单例实例 */

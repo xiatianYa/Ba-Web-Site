@@ -8,8 +8,8 @@ defineOptions({ name: 'UserMenu' });
 
 const authStore = useAuthStore();
 
-/** 用户昵称首字符（作为头像占位） */
-const nicknameInitial = computed(() => authStore.userInfo?.nickName?.charAt(0) || 'U');
+/** 用户昵称首字符（作为头像占位；后端将昵称映射到 userName 字段） */
+const nicknameInitial = computed(() => authStore.userInfo?.userName?.charAt(0) || 'U');
 
 /** 退出登录 */
 function handleLogout() {
@@ -32,9 +32,13 @@ function handleLogout() {
     <IconButton
       tabindex="0"
       :label="$t('login.userMenu')"
-      :title="authStore.userInfo?.nickName || authStore.userInfo?.userName"
+      :title="authStore.userInfo?.userName"
     >
+      <span v-if="authStore.userInfo?.avatar" class="h-6 w-6 overflow-hidden rounded-full">
+        <img :src="authStore.userInfo.avatar" class="h-full w-full object-cover" alt="" />
+      </span>
       <span
+        v-else
         class="grid h-6 w-6 place-items-center rounded-full bg-primary/15 text-xs font-bold text-primary"
       >
         {{ nicknameInitial }}
@@ -45,9 +49,14 @@ function handleLogout() {
       class="dropdown-content menu z-10 mt-2 w-48 gap-1 rounded-box border border-base-300 bg-base-100 p-2 shadow-xl"
     >
       <li class="pointer-events-none">
-        <span class="flex flex-col">
-          <span class="text-sm font-semibold">{{ authStore.userInfo?.nickName || $t('login.notLoggedIn') }}</span>
-          <span class="text-xs text-base-content/50">{{ authStore.userInfo?.userName }}</span>
+        <span class="flex items-center gap-2">
+          <img
+            v-if="authStore.userInfo?.avatar"
+            :src="authStore.userInfo.avatar"
+            class="h-7 w-7 rounded-full object-cover"
+            alt=""
+          />
+          <span class="text-sm font-semibold">{{ authStore.userInfo?.userName || $t('login.notLoggedIn') }}</span>
         </span>
       </li>
       <li>

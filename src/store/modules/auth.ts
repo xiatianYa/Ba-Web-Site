@@ -26,9 +26,9 @@ export const useAuthStore = defineStore('auth', {
 
     /** 保存登录令牌并持久化 */
     setToken(data: Api.Auth.LoginToken) {
-      this.accessToken = data.accessToken;
+      this.accessToken = data.token;
       this.refreshToken = data.refreshToken;
-      localStg.set(AUTH_STORAGE_KEYS.TOKEN, data.accessToken);
+      localStg.set(AUTH_STORAGE_KEYS.TOKEN, data.token);
       localStg.set(AUTH_STORAGE_KEYS.REFRESH_TOKEN, data.refreshToken);
     },
 
