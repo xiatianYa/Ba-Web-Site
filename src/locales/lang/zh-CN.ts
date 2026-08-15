@@ -16,19 +16,16 @@ export default {
     developing: '开发中，敬请期待'
   },
   nav: {
-    toggleMenu: '切换菜单',
     toggleTheme: '切换主题',
-    collapse: '收起侧边栏',
-    expand: '展开侧边栏',
     switchLanguage: '切换语言'
   },
   home: {
-    badge: 'Electron · Vue 3 · TypeScript · Vite · Naive UI',
+    badge: '蓝档案社区 · 官方登录器',
     title: 'BaLauncher',
     description:
-      '基于 Electron + Vue 3 + Vite 构建的 CS2 游戏服务器管理启动器，为社区服务器管理提供一站式解决方案。',
-    learnMore: '了解功能',
-    goServer: '前往服务器',
+      '专为 CS2 社区服务器打造的桌面登录器：实时查询服务器状态、一键加入服务器、多社区集中管理与数据统计，一站式简化服务器管理。',
+    downloadNow: '立即下载',
+    viewServer: '查看服务器列表',
     navTitle: '常用导航',
     spotlightTitle: '热门推荐',
     section: {
@@ -45,7 +42,13 @@ export default {
       mac: 'macOS 版',
       action: '立即下载',
       latest: '最新版本',
-      unavailable: '暂未开放'
+      unavailable: '暂未开放',
+      badge: '官方出品',
+      version: 'v2.0.3',
+      size: '安装包约 85 MB',
+      sysWin: '支持 Windows 7 及以上系统',
+      sysLinux: '支持 Ubuntu 18.04 及以上系统',
+      sysMac: '支持 macOS 11 及以上系统'
     },
     feature: {
       query: { title: '实时查询', desc: '实时查询服务器状态，在线人数、地图、延迟一目了然' },
@@ -56,6 +59,49 @@ export default {
       refresh: { title: '自动刷新', desc: '服务器状态自动刷新，时刻掌握最新动态' },
       auth: { title: '多端登录', desc: '支持 Steam / QQ 登录，快速进入个人中心' },
       stats: { title: '数据统计', desc: '服务器信息与比分数据可视化展示' }
+    },
+    dash: {
+      currentOnline: '服务器当前在线',
+      currentOnlineDesc: '接入服务器实时在线一览',
+      communityRealtime: '社区实时在线',
+      communityRealtimeDesc: '各社区实时在线人数与服务器数',
+      historyOnline: '服务器历史在线',
+      mapStats: '地图游玩统计',
+      mapStatsDesc: '各地图游玩次数排行',
+      playerStats: '在线玩家数量统计',
+      playerStatsDesc: '平台实时在线规模一览',
+      serversOnline: '在线服务器',
+      playersOnline: '在线玩家',
+      totalCommunities: '接入社区',
+      mostOnline: '最多人在线',
+      noData: '暂无数据',
+      waitingWs: '等待实时数据接入…',
+      totalOnline: '总在线人数',
+      currentMap: '当前地图',
+      onlinePlayers: '在线人数',
+      timeRangeOneDay: '一天',
+      timeRangeThreeDays: '三天',
+      timeRangeOneWeek: '一周',
+      onlineUser: '在线玩家',
+      historyFetchFailed: '历史数据获取失败',
+      mapPlayFetchFailed: '排行榜获取失败',
+      playCount: '{count}次',
+      playCountWan: '{count}万次',
+      playCountK: '{count}k次'
+    },
+    preview: {
+      title: '界面预览',
+      desc: 'BaLauncher 实际运行界面展示',
+      home: '首页',
+      group: '群助手',
+      keyBind: '按键绑定',
+      mapOrder: '地图订阅',
+      mapRecord: '服务器运行记录',
+      perfView: '性能监测',
+      serverList: '服务器列表',
+      toolbox: '工具箱',
+      prev: '上一张',
+      next: '下一张'
     }
   },
   server: {
@@ -88,6 +134,7 @@ export default {
     autoJoin: '自动加入',
     copyAddr: '复制地址',
     copySuccess: '已复制到剪贴板',
+    joinSuccess: '连接成功',
     minutesAgo: '{count} 分钟前',
     wsConnecting: '连接中…',
     wsConnected: '实时推送中',
@@ -121,7 +168,10 @@ export default {
       delayTip: '每次尝试加入的间隔时间，过短可能导致频繁重连',
       startJoin: '开始挤服',
       copiedTip: '已复制',
-      copyTip: 'steam 连接指令已复制，启动游戏后自动加入'
+      autoJoining: '开始自动挤服，检测到空位后将自动连接服务器',
+      autoJoiningTarget: '自动挤服中：{name}（在线 ≤ {count} 人可进）',
+      wsError: 'WebSocket 未连接，自动挤服失败',
+      autoJoinStopped: '已停止自动挤服'
     }
   },
   tools: {

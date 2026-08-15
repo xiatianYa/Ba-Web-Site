@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Icon } from '@iconify/vue';
 import { storeToRefs } from 'pinia';
 import { useGameStore } from '@/store/modules/game';
-import ServerWebsocket from '@/utils/ws/server';
+import { useAuthStore } from '@/store/modules/auth';
+import ServerWebsocket, { sendMsgConnect } from '@/utils/ws/server';
+import { useAutoJoin } from '@/hooks/business/use-auto-join';
 import { localStg } from '@/utils/storage';
 import { APP_STORAGE_KEYS } from '@/constants/cache';
 import ServerCardList from './modules/server-card-list.vue';
@@ -16,6 +18,7 @@ defineOptions({ name: 'ServerView' });
 
 const { t } = useI18n();
 const gameStore = useGameStore();
+const authStore = useAuthStore();
 const { filteredServerList, communityList, wsStatus, selectedCommunityId } = storeToRefs(gameStore);
 
 /** 视图模式（持久化到本地存储） */
@@ -52,31 +55,74 @@ async function copyText(text: string) {
   }
 }
 
-/** 加入服务器（Web 端复制 connect 指令） */
+/** 加入服务器：唤起本机 Steam 启动 CS2 连接指定服务器，并通知后端（type=101） */
 function joinServer(server: Api.Game.SeverVo) {
-  copyText(`connect ${server.connectStr}`);
+  const aLink = document.createElement('a');
+  aLink.href = `steam://rungame/730/76561198977557298/+connect ${server.connectStr}`;
+  aLink.click();
+  showToast(t('server.joinSuccess'));
+  sendMsgConnect(server.serverId);
 }
 
 /** 复制服务器地址 */
 function copyServerAddr(server: Api.Game.SeverVo) {
-  copyText(server.connectStr);
+  copyText(`connect ${server.connectStr}`);
 }
 
 /** 挤服窗口显隐与目标服务器 */
 const joinDialogVisible = ref(false);
 const joinDialogServer = ref<Api.Game.SeverVo | null>(null);
 
-/** 打开挤服窗口（展示服务器信息 + 配置触发人数/延迟） */
+/** 自动挤服 */
+const { isAutoJoining, startAutoJoin, stopAutoJoin } = useAutoJoin();
+/** 自动挤服目标（用于状态条展示） */
+const autoJoinInfo = ref<{ name: string; judgeCount: number } | null>(null);
+
+/** 打开挤服窗口（未登录则弹出登录窗） */
 function openJoinDialog(server: Api.Game.SeverVo) {
+  if (!authStore.isLogin) {
+    authStore.openLoginModal();
+    return;
+  }
   joinDialogServer.value = server;
   joinDialogVisible.value = true;
 }
 
-/** 开始挤服：Web 端无法直接启动游戏，复制 steam 协议链接（可唤起本机 CS2） */
-function handleStartJoin(server: Api.Game.SeverVo) {
-  copyText(`steam://connect/${server.connectStr}`);
-  showToast(t('server.joinDialog.copyTip'));
+/**
+ * 开始挤服：登录后通过鉴权 WS 发送 type=114 查询（QueryCs2ServerVo）
+ * 一直循环直到后端返回 true（空位），期间每轮必须等响应后再发下一条；
+ * 找到空位后复制 steam 连接指令供用户启动 CS2
+ */
+async function handleStartJoin(server: Api.Game.SeverVo) {
+  if (!authStore.isLogin) {
+    authStore.openLoginModal();
+    return;
+  }
+  const config = (localStg.get(APP_STORAGE_KEYS.GAME_JOIN_CONFIG) as
+    | { joinPerson?: number; joinDelay?: number }
+    | null) ?? {};
+  const judgeCount = config.joinPerson ?? 1;
+  const delayMs = config.joinDelay ?? 300;
+
   joinDialogVisible.value = false;
+  autoJoinInfo.value = { name: server.serverName, judgeCount };
+  showToast(t('server.joinDialog.autoJoining'));
+
+  const result = await startAutoJoin(server, judgeCount, delayMs);
+  autoJoinInfo.value = null;
+
+  if (result === 'found') {
+    joinServer(server);
+  } else if (result === 'error') {
+    showToast(t('server.joinDialog.wsError'));
+  }
+}
+
+/** 手动停止自动挤服 */
+function handleStopAutoJoin() {
+  stopAutoJoin();
+  autoJoinInfo.value = null;
+  showToast(t('server.joinDialog.autoJoinStopped'));
 }
 
 /** 切换视图模式并持久化 */
@@ -104,9 +150,18 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
+  stopAutoJoin();
   ServerWebsocket.close();
   if (toastTimer) clearTimeout(toastTimer);
 });
+
+// 登录态变化时重建 WS 连接，切换鉴权端点 /ws/server/{token} 与公共端点 /ws/public/server
+watch(
+  () => authStore.isLogin,
+  () => {
+    ServerWebsocket.init();
+  }
+);
 </script>
 
 <template>
@@ -167,6 +222,15 @@ onUnmounted(() => {
 
     <!-- 挤服窗口 -->
     <GameJoinDialog v-model:visible="joinDialogVisible" :server="joinDialogServer" @start-join="handleStartJoin" />
+
+    <!-- 自动挤服进行中状态条 -->
+    <div v-if="isAutoJoining && autoJoinInfo" class="auto-join-bar">
+      <Icon icon="heroicons:arrow-path" class="auto-join-spin" />
+      <span class="auto-join-text">
+        {{ $t('server.joinDialog.autoJoiningTarget', { name: autoJoinInfo.name, count: autoJoinInfo.judgeCount }) }}
+      </span>
+      <button class="auto-join-stop" @click="handleStopAutoJoin">{{ $t('common.cancel') }}</button>
+    </div>
 
     <!-- 复制成功提示 -->
     <div v-if="toastMsg" class="toast toast-center toast-middle z-50">
@@ -284,6 +348,70 @@ onUnmounted(() => {
 
   50% {
     opacity: 0.4;
+  }
+}
+
+/* ---------- 自动挤服状态条 ---------- */
+.auto-join-bar {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: calc(100vw - 32px);
+  padding: 10px 14px;
+  border-radius: 14px;
+  border: 1px solid color-mix(in oklab, var(--color-primary) 35%, transparent);
+  background: color-mix(in oklab, var(--color-base-100) 88%, transparent);
+  box-shadow: 0 12px 32px -8px rgba(2, 6, 23, 0.35);
+  backdrop-filter: blur(10px);
+  transform: translateX(-50%);
+
+  .auto-join-spin {
+    flex-shrink: 0;
+    font-size: 18px;
+    color: var(--color-primary);
+    animation: auto-join-rotate 1.2s linear infinite;
+  }
+
+  .auto-join-text {
+    min-width: 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: color-mix(in oklab, var(--color-base-content) 85%, transparent);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .auto-join-stop {
+    flex-shrink: 0;
+    height: 26px;
+    padding: 0 12px;
+    border: none;
+    border-radius: 8px;
+    background: color-mix(in oklab, var(--color-base-content) 8%, transparent);
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: color-mix(in oklab, var(--color-base-content) 14%, transparent);
+      color: color-mix(in oklab, var(--color-base-content) 85%, transparent);
+    }
+  }
+}
+
+@keyframes auto-join-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }
 </style>

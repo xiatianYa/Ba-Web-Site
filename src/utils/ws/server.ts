@@ -1,12 +1,22 @@
 import { useGameStore } from '@/store/modules/game';
+import { useAuthStore } from '@/store/modules/auth';
 import { createMessageHandlers } from './handlers';
 import type { ServerWebsocketType } from './types';
 
+const WS_BASE = import.meta.env.VITE_WS_URL || (import.meta.env.DEV ? 'ws://127.0.0.1:8080' : 'wss://www.bluearchive.top');
+
 /**
- * 服务器实时数据 WebSocket（对应后端 @ServerEndpoint("/ws/public/server")）
- * 公共端点，无需鉴权，推送服务器列表（202）与游戏实时数据（204）
+ * 构建连接地址：
+ * - 已登录：走鉴权端点 /ws/server/{token}（对应后端 @ServerEndpoint("/ws/server/{token}")），以路径参数传递 token
+ * - 未登录：走公共端点 /ws/public/server（无需鉴权，推送服务器列表 202 / 游戏实时数据 204）
  */
-const WS_URL = `${import.meta.env.VITE_WS_URL || (import.meta.env.DEV ? 'ws://127.0.0.1:8080' : 'wss://www.bluearchive.top')}/ws/public/server`;
+function buildWsUrl(): string {
+  const authStore = useAuthStore();
+  if (authStore.isLogin) {
+    return `${WS_BASE}/ws/server/${authStore.accessToken}`;
+  }
+  return `${WS_BASE}/ws/public/server`;
+}
 
 /** 服务器 WebSocket 单例实例 */
 const ServerWebsocket: ServerWebsocketType = {
@@ -22,7 +32,7 @@ const ServerWebsocket: ServerWebsocketType = {
     const gameStore = useGameStore();
     gameStore.setWsStatus('connecting');
 
-    const ws = new WebSocket(WS_URL);
+    const ws = new WebSocket(buildWsUrl());
     this.ws = ws;
 
     // 连接成功
@@ -89,7 +99,25 @@ const ServerWebsocket: ServerWebsocketType = {
       this.ws = null;
     }
     this.manualClose = false;
+  },
+
+  /** 发送消息（与后端协议一致：{ type, data }），连接未就绪返回 false */
+  send(type: string, data: string): boolean {
+    if (!this.ws || this.ws.readyState !== WebSocket.OPEN) {
+      console.warn('[SERVER-WS] 未连接，无法发送消息:', { type, data });
+      return false;
+    }
+    this.ws.send(JSON.stringify({ type, data }));
+    return true;
   }
 };
+
+/**
+ * 通知后端玩家加入服务器（type=101，对应 CODE_JOIN_SERVER）
+ * @param serverId 服务器ID
+ */
+export function sendMsgConnect(serverId: number | string): boolean {
+  return ServerWebsocket.send('101', String(serverId));
+}
 
 export default ServerWebsocket;

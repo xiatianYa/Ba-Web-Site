@@ -2,6 +2,7 @@ import { request, type RequestResult } from '@/service/request';
 
 export * from './auth';
 export * from './game/community';
+export * from './game/map';
 export * from './system/dict';
 
 /** 首页数据（示例） */

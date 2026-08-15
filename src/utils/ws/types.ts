@@ -9,6 +9,8 @@ export interface ServerWebsocketType {
   onClose(): void;
   reconnect(): void;
   close(): void;
+  /** 发送消息（type 为消息码，data 为字符串载荷），连接未就绪返回 false */
+  send(type: string, data: string): boolean;
 }
 
 /** 消息处理函数类型 */

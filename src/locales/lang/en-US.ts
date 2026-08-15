@@ -16,19 +16,16 @@ export default {
     developing: 'Under development, stay tuned'
   },
   nav: {
-    toggleMenu: 'Toggle menu',
     toggleTheme: 'Toggle theme',
-    collapse: 'Collapse sidebar',
-    expand: 'Expand sidebar',
     switchLanguage: 'Switch language'
   },
   home: {
-    badge: 'Electron · Vue 3 · TypeScript · Vite · Naive UI',
+    badge: 'Blue Archive · Official Launcher',
     title: 'BaLauncher',
     description:
-      'A CS2 game server management launcher built with Electron + Vue 3 + Vite, providing a one-stop solution for community server management.',
-    learnMore: 'Learn more',
-    goServer: 'Go to Server',
+      'A desktop launcher built for CS2 community servers: real-time server status, one-click join, multi-community management and data stats — all in one place.',
+    downloadNow: 'Download Now',
+    viewServer: 'View Server List',
     navTitle: 'Quick Navigation',
     spotlightTitle: 'Highlights',
     section: {
@@ -45,7 +42,13 @@ export default {
       mac: 'macOS',
       action: 'Download Now',
       latest: 'Latest version',
-      unavailable: 'Coming soon'
+      unavailable: 'Coming soon',
+      badge: 'Official',
+      version: 'v2.0.3',
+      size: '~85 MB installer',
+      sysWin: 'Windows 7 and above',
+      sysLinux: 'Ubuntu 18.04 and above',
+      sysMac: 'macOS 11 and above'
     },
     feature: {
       query: { title: 'Live Query', desc: 'Query CS2 server status in real time — players, map and latency at a glance' },
@@ -56,6 +59,49 @@ export default {
       refresh: { title: 'Auto Refresh', desc: 'Server status auto-refreshes to stay up to date' },
       auth: { title: 'Multi-Auth', desc: 'Sign in with Steam / QQ accounts' },
       stats: { title: 'Data Stats', desc: 'Visualize server info and match score data' }
+    },
+    dash: {
+      currentOnline: 'Servers Online Now',
+      currentOnlineDesc: 'Live view of connected servers',
+      communityRealtime: 'Community Live',
+      communityRealtimeDesc: 'Live players & servers per community',
+      historyOnline: 'Server Online History',
+      mapStats: 'Map Play Stats',
+      mapStatsDesc: 'Map play count ranking',
+      playerStats: 'Online Players',
+      playerStatsDesc: 'Live platform scale at a glance',
+      serversOnline: 'Online Servers',
+      playersOnline: 'Online Players',
+      totalCommunities: 'Communities',
+      mostOnline: 'Most Players',
+      noData: 'No data',
+      waitingWs: 'Waiting for live data…',
+      totalOnline: 'Total Online',
+      currentMap: 'Map',
+      onlinePlayers: 'Players',
+      timeRangeOneDay: '1 day',
+      timeRangeThreeDays: '3 days',
+      timeRangeOneWeek: '1 week',
+      onlineUser: 'Online Users',
+      historyFetchFailed: 'Failed to load history data',
+      mapPlayFetchFailed: 'Failed to load ranking',
+      playCount: '{count} plays',
+      playCountWan: '{count}w plays',
+      playCountK: '{count}k plays'
+    },
+    preview: {
+      title: 'UI Preview',
+      desc: 'BaLauncher UI showcase',
+      home: 'Home',
+      group: 'Group Bot',
+      keyBind: 'Key Bindings',
+      mapOrder: 'Map Subscribe',
+      mapRecord: 'Server Records',
+      perfView: 'Performance Monitor',
+      serverList: 'Server List',
+      toolbox: 'Toolbox',
+      prev: 'Previous',
+      next: 'Next'
     }
   },
   server: {
@@ -88,6 +134,7 @@ export default {
     autoJoin: 'Auto join',
     copyAddr: 'Copy address',
     copySuccess: 'Copied to clipboard',
+    joinSuccess: 'Connection success',
     minutesAgo: '{count} minutes ago',
     wsConnecting: 'Connecting…',
     wsConnected: 'Live',
@@ -121,7 +168,10 @@ export default {
       delayTip: 'Interval between join attempts; too short may cause frequent reconnects',
       startJoin: 'Start joining',
       copiedTip: 'Copied',
-      copyTip: 'Steam connect command copied, auto-joins after game starts'
+      autoJoining: 'Auto join started; the server will connect once a slot is found',
+      autoJoiningTarget: 'Auto joining: {name} (joinable when ≤ {count} players)',
+      wsError: 'WebSocket disconnected, auto join failed',
+      autoJoinStopped: 'Auto join stopped'
     }
   },
   tools: {

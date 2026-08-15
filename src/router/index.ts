@@ -1,5 +1,5 @@
 import type { App } from 'vue';
-import { createRouter, createWebHashHistory, type RouteRecordRaw } from 'vue-router';
+import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
 import { createRouterGuard } from './guard';
 
 /** 应用路由表（新增页面在此追加，meta.title 为 locales 中的翻译键） */
@@ -46,7 +46,7 @@ function createVueRoutes(): RouteRecordRaw[] {
 }
 
 export const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes: createVueRoutes()
 });
 

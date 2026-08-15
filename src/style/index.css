@@ -123,3 +123,189 @@ body {
   opacity: 0;
   transform: translateY(-10px) scale(0.98);
 }
+
+/* ============ 视口入场动画（配合 v-reveal 指令） ============ */
+.reveal {
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-init {
+  opacity: 0;
+  transform: translateY(28px);
+}
+
+.reveal-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-init {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ============ 通用仪表盘卡片 ============ */
+.dash-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  height: 100%;
+  padding: 16px;
+  border-radius: 16px;
+  border: 1px solid color-mix(in oklab, var(--color-base-content) 8%, transparent);
+  background: color-mix(in oklab, var(--color-base-200) 55%, transparent);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  transition:
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.dash-card:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in oklab, var(--color-primary) 30%, transparent);
+  box-shadow: 0 14px 30px rgba(0, 150, 255, 0.14);
+}
+
+/* 卡片头部：标题（左）+ 状态徽章（右） */
+.dash-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.dash-title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+  font-size: 15px;
+  font-weight: 800;
+  color: color-mix(in oklab, var(--color-base-content) 88%, transparent);
+}
+
+.dash-title-icon {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  color: #fff;
+  background: linear-gradient(135deg, #38bdf8, #0096ff);
+  box-shadow: 0 3px 10px rgba(0, 150, 255, 0.35);
+  flex-shrink: 0;
+}
+
+/* 实时徽章 */
+.dash-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 9px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #22c55e;
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+  flex-shrink: 0;
+
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 5px rgba(34, 197, 94, 0.6);
+    animation: dash-pulse 1.5s ease-in-out infinite;
+  }
+}
+
+/* 示例数据徽章 */
+.dash-sample {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 9px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #f0a020;
+  background: rgba(240, 160, 32, 0.1);
+  border: 1px solid rgba(240, 160, 32, 0.25);
+  flex-shrink: 0;
+}
+
+/* 卡片空状态 */
+.dash-empty {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 32px 0;
+  text-align: center;
+  color: color-mix(in oklab, var(--color-base-content) 40%, transparent);
+
+  .dash-empty-icon {
+    opacity: 0.4;
+  }
+
+  p {
+    font-size: 13px;
+  }
+}
+
+/* 区块标题（功能/预览/下载等整块区域） */
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 20px;
+  font-weight: 800;
+  color: color-mix(in oklab, var(--color-base-content) 88%, transparent);
+
+  &::before {
+    content: '';
+    width: 5px;
+    height: 22px;
+    border-radius: 3px;
+    background: linear-gradient(180deg, #38bdf8, #0096ff);
+    box-shadow: 0 0 8px rgba(0, 150, 255, 0.5);
+  }
+}
+
+.section-desc {
+  margin-top: 6px;
+  font-size: 13px;
+  color: color-mix(in oklab, var(--color-base-content) 50%, transparent);
+}
+
+@keyframes dash-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.35;
+  }
+}
+
+/* ============ 内容区块 ============ */
+.story-section {
+  position: relative;
+  padding: 12px 0;
+}
+
+.story-content {
+  width: 100%;
+}

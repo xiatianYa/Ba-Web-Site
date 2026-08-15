@@ -10,3 +10,16 @@ declare namespace CommonType {
     [K in keyof T]?: T[K] | null;
   };
 }
+
+/** 接口公共命名空间 */
+declare namespace Api {
+  namespace Common {
+    /** 通用查询参数（分页） */
+    type CommonSearchParams = {
+      /** 当前页 */
+      current?: number;
+      /** 每页条数 */
+      size?: number;
+    };
+  }
+}

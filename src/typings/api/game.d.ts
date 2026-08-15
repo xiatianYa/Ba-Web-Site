@@ -173,5 +173,37 @@ declare namespace Api {
       /** 提示语 */
       msg: string | null;
     }
+
+    /** 地图游玩次数排行 VO（/gameServerMapRecord/getMapPlayCountTop） */
+    interface GameMapPlayCountVo {
+      /** 地图ID */
+      mapId: number;
+      /** 地图名称 */
+      mapName: string;
+      /** 译名 */
+      mapLabel: string;
+      /** 图片路径 */
+      mapUrl: string;
+      /** 运行次数 */
+      playCount: number;
+    }
+
+    /** 社区在线人数数据系列 */
+    interface CommunityOnlineSeriesVo {
+      /** 社区ID */
+      communityId: number;
+      /** 社区名称 */
+      communityName: string;
+      /** 各时间点的在线人数 */
+      data: number[];
+    }
+
+    /** 社区在线人数柱状图 VO（/gameServerMapRecord/getCommunityOnlineBar） */
+    interface CommunityOnlineBarVo {
+      /** X 轴时间轴（每半小时一个点位） */
+      timeAxis: string[];
+      /** 各社区的数据系列 */
+      series: CommunityOnlineSeriesVo[];
+    }
   }
 }
