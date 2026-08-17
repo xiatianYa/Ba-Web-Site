@@ -299,7 +299,7 @@ const getTagLabel = (tag: string): string => {
 
 .custom-thead {
   display: grid;
-  grid-template-columns: 2fr 1.5fr 100px 120px 90px 130px;
+  grid-template-columns: 2fr 1.5fr 100px 170px 90px 130px;
   gap: 12px;
   padding: 0 16px 8px;
   border-bottom: 1px solid color-mix(in oklab, var(--color-base-content) 8%, transparent);
@@ -381,7 +381,7 @@ const getTagLabel = (tag: string): string => {
 .custom-row {
   position: relative;
   display: grid;
-  grid-template-columns: 2fr 1.5fr 100px 120px 90px 130px;
+  grid-template-columns: 2fr 1.5fr 100px 170px 90px 130px;
   gap: 12px;
   align-items: center;
   padding: 16px;
