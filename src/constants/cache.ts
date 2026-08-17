@@ -8,6 +8,8 @@ export const APP_STORAGE_KEYS = {
   LANG: 'lang' as const,
   /** 服务器页视图模式（card 卡片 / table 表格） */
   SERVER_VIEW: 'serverView' as const,
+  /** 鼠标样式（default 默认样式 / animated 动画样式） */
+  MOUSE_STYLE: 'mouseStyle' as const,
   /** 挤服配置（触发人数 + 挤服延迟） */
   GAME_JOIN_CONFIG: 'gameJoinConfig' as const
 };

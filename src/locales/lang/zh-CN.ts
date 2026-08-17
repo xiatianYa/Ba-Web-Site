@@ -44,8 +44,8 @@ export default {
       latest: '最新版本',
       unavailable: '暂未开放',
       badge: '官方出品',
-      version: 'v2.0.3',
-      size: '安装包约 85 MB',
+      version: 'v2.1.4',
+      size: '安装包约 100 MB',
       sysWin: '支持 Windows 7 及以上系统',
       sysLinux: '支持 Ubuntu 18.04 及以上系统',
       sysMac: '支持 macOS 11 及以上系统'
@@ -182,6 +182,11 @@ export default {
     appearance: '外观设置',
     theme: '深色模式',
     themeDesc: '切换网站明暗主题',
+    mouseStyle: '鼠标样式',
+    mouseStyleDefault: '默认鼠标样式',
+    mouseStyleDefaultDesc: '使用系统默认光标',
+    mouseStyleAnimated: '动画鼠标样式',
+    mouseStyleAnimatedDesc: '碧蓝档案风格点击与拖尾特效',
     language: '语言设置',
     languageDesc: '选择网站显示语言'
   },

@@ -182,6 +182,11 @@ export default {
     appearance: 'Appearance',
     theme: 'Dark mode',
     themeDesc: 'Toggle light/dark theme',
+    mouseStyle: 'Mouse style',
+    mouseStyleDefault: 'Default cursor',
+    mouseStyleDefaultDesc: 'Use the system default cursor',
+    mouseStyleAnimated: 'Animated cursor',
+    mouseStyleAnimatedDesc: 'Blue Archive style click & trail effect',
     language: 'Language',
     languageDesc: 'Select display language'
   },
